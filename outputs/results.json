@@ -8,6 +8,10 @@
   "std": 8.446268570933459,
   "min": 9.691666666666666,
   "max": 47.25595238095238,
+  "outlier_lower": -2.932514880952386,
+  "outlier_upper": 48.91569940476191,
+  "outlier_iqr_count": 0,
+  "outlier_z_count": 0,
   "seasonal_strength": 0.9266120344036196,
   "final_model": "SARIMA(2,1,0)(1,0,0)[52]",
   "final_spec": "SARIMA(2, 1, 0)(1,0,0)[52]",
@@ -282,6 +286,7 @@
     {
       "Model": "Naive (random walk)",
       "Spesifikasi": "ŷₜ₊ₕ = yₜ",
+      "d": NaN,
       "k": 0,
       "AIC": NaN,
       "AICc": NaN,
@@ -298,6 +303,7 @@
     {
       "Model": "MA(3)",
       "Spesifikasi": "Rata-rata bergerak 3 minggu",
+      "d": NaN,
       "k": 1,
       "AIC": NaN,
       "AICc": NaN,
@@ -314,6 +320,7 @@
     {
       "Model": "SARIMA(2,1,0)(1,0,0)[52]",
       "Spesifikasi": "Model musiman terpilih (AICc + Ljung-Box)",
+      "d": 1.0,
       "k": 4,
       "AIC": 309.72217169789053,
       "AICc": 310.63126260698147,
@@ -330,6 +337,7 @@
     {
       "Model": "Fourier K=2 + ARIMA(1,1,1)",
       "Spesifikasi": "Regresi Fourier (K=2) + ARIMA(1,1,1)",
+      "d": 1.0,
       "k": 7,
       "AIC": 684.3808324622838,
       "AICc": 685.5851335375527,
@@ -346,6 +354,7 @@
     {
       "Model": "Holt",
       "Spesifikasi": "Trend aditif",
+      "d": NaN,
       "k": 10,
       "AIC": 421.4811600096669,
       "AICc": 423.84675140751636,
@@ -362,6 +371,7 @@
     {
       "Model": "SES",
       "Spesifikasi": "Simple exponential smoothing",
+      "d": NaN,
       "k": 10,
       "AIC": 417.49556168034053,
       "AICc": 419.86115307819,
@@ -378,6 +388,7 @@
     {
       "Model": "ARIMA(1,1,3)",
       "Spesifikasi": "ARIMA(1,1,3)",
+      "d": 1.0,
       "k": 5,
       "AIC": 679.6219083278886,
       "AICc": 680.2670696182112,
@@ -394,6 +405,7 @@
     {
       "Model": "AR(12)",
       "Spesifikasi": "AR(12) dengan konstanta",
+      "d": 0.0,
       "k": 14,
       "AIC": 641.6098183791074,
       "AICc": 646.3289195027029,
@@ -410,6 +422,7 @@
     {
       "Model": "MA(8)",
       "Spesifikasi": "Rata-rata bergerak 8 minggu",
+      "d": NaN,
       "k": 1,
       "AIC": NaN,
       "AICc": NaN,
@@ -426,6 +439,7 @@
     {
       "Model": "Holt-Winters",
       "Spesifikasi": "Trend + musiman aditif, s=52",
+      "d": NaN,
       "k": 10,
       "AIC": 428.44159043779047,
       "AICc": 430.80718183563994,
@@ -442,6 +456,7 @@
     {
       "Model": "ARMA(2,3)",
       "Spesifikasi": "ARMA(2,3)",
+      "d": 0.0,
       "k": 7,
       "AIC": 686.8343778394806,
       "AICc": 688.0517691438284,
@@ -458,6 +473,7 @@
     {
       "Model": "Seasonal naive",
       "Spesifikasi": "ŷₜ₊ₕ = yₜ₊ₕ₋₅₂",
+      "d": NaN,
       "k": 0,
       "AIC": NaN,
       "AICc": NaN,

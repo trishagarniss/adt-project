@@ -33,6 +33,13 @@ TNR = "Times New Roman"
 BLACK = RGBColor(0, 0, 0)
 TABLE_HEADER_FILL = "D9E2F3"
 ACCESS_DATE = "29 Oktober 2026"
+MEMBERS = [
+    ("Trisha Garnis W", "L0224012"),
+    ("Kunto Rossindu H", "L0224020"),
+    ("Maulana Naufal H", "L02240XX"),
+    ("Michael Christian S. G.", "L02240XX"),
+    ("Raihan Ade", "L02240XX"),
+]
 
 TABLES = 0
 FIGURES = 0
@@ -325,7 +332,6 @@ def add_code_listing(document: Document, path: Path, title: str) -> None:
         run = paragraph.add_run(line if line else " ")
         run.font.name = "Consolas"
         run.font.size = Pt(7.5)
-    document.add_page_break()
 
 
 def cover(document: Document) -> None:
@@ -368,10 +374,10 @@ def cover(document: Document) -> None:
     run.font.name = TNR
     run.font.size = Pt(12)
 
-    for index in range(1, 6):
+    for name, nim in MEMBERS:
         paragraph = document.add_paragraph()
         paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        run = paragraph.add_run(f"[Nama Anggota {index}] – [NIM Anggota {index}]")
+        run = paragraph.add_run(f"{name} – {nim}")
         run.font.name = TNR
         run.font.size = Pt(12)
 
@@ -431,10 +437,11 @@ def bab1(document: Document) -> None:
     )
     body(
         document,
-        "Ketersediaan stasiun pengukuran PM2,5 darat di Surakarta terbatas. Oleh karena itu "
-        "digunakan data sekunder dari model CAMS global yang disediakan melalui Open-Meteo Air "
-        "Quality API. Data ini merupakan keluaran model reanalisis, bukan pengukuran stasiun, "
-        "sehingga hasil harus ditafsirkan sebagai representasi grid atmosfer di sekitar koordinat "
+        "Data pengukuran PM2,5 darat yang siap dipakai untuk periode dan lokasi ini tidak tersedia "
+        "dalam proyek. Oleh karena itu digunakan data sekunder dari model CAMS global yang "
+        "disediakan melalui Open-Meteo Air Quality API. Data ini merupakan keluaran model "
+        "reanalisis, bukan pengukuran stasiun, sehingga hasil harus ditafsirkan sebagai "
+        "representasi grid atmosfer di sekitar koordinat "
         "Surakarta (Open-Meteo, 2026; Copernicus Atmosphere Monitoring Service, 2024).",
     )
     body(
@@ -472,8 +479,9 @@ def bab2(document: Document, results: dict, ratios: pd.DataFrame) -> None:
     body(
         document,
         "Data diunduh dari Open-Meteo Air Quality API yang meneruskan keluaran model CAMS global. "
-        "Koordinat yang dipakai adalah 7,5545° LS dan 110,8060° BT dengan zona waktu Asia/Jakarta. "
-        "Variabel yang diambil adalah pm2_5 dalam satuan µg/m³. Data mentah berbentuk jam-jaman, "
+        "Koordinat permintaan adalah 7,5545° LS dan 110,8060° BT; API mengembalikan titik grid "
+        "7,60° LS dan 110,80° BT dengan zona waktu Asia/Jakarta. Variabel yang diambil adalah "
+        "pm2_5 dalam satuan µg/m³. Data mentah berbentuk jam-jaman, "
         "kemudian diagregasi menjadi rata-rata mingguan. Agregasi dilakukan oleh penulis, bukan "
         "oleh penyedia, sehingga bentuk data mentah tetap dapat ditelusuri. Tanggal akses data: "
         f"{ACCESS_DATE}. Ringkasan data dan pembagian latih–uji disajikan pada Tabel 1.",
@@ -521,9 +529,10 @@ def bab2(document: Document, results: dict, ratios: pd.DataFrame) -> None:
         "Rasio PM10/PM2,5 bulanan dipakai sebagai indikator konsistensi fisik. Sebelum November "
         "2024, rasio rata-rata 1,464 dengan simpangan baku 0,015; sesudahnya rasio turun menjadi "
         "1,036 dengan simpangan baku 0,025. Nilai mendekati 1 berarti PM2,5 hampir sama dengan "
-        "PM10, yang tidak wajar untuk aerosol atmosfer. Pola serupa ditemukan pada lokasi lain "
-        "(Jakarta dan Surabaya), sehingga indikasi patahan model CAMS lebih kuat daripada sekadar "
-        "fluktuasi lokal. Periode setelah 31 Oktober 2024 karena itu tidak dipakai (Gambar 1; Tabel 2).",
+        "PM10, yang tidak wajar untuk aerosol atmosfer. Perubahan ini terjadi tepat pada November "
+        "2024 dan bertahan pada bulan-bulan berikutnya, sehingga indikasi patahan basis model CAMS "
+        "lebih kuat daripada fluktuasi lokal. Periode setelah 31 Oktober 2024 karena itu tidak "
+        "dipakai (Gambar 1; Tabel 2).",
     )
     add_figure(
         document,
@@ -554,6 +563,13 @@ def bab2(document: Document, results: dict, ratios: pd.DataFrame) -> None:
         "(kemencengan 0,635) dengan ekor relatif ringan (kurtosis −0,367). Koefisien variasi 0,355 "
         "menunjukkan variasi yang cukup besar terhadap rata-rata (Tabel 3). Pola seri dan "
         "pembagian latih–uji ditunjukkan pada Gambar 2.",
+    )
+    body(
+        document,
+        "Pemeriksaan pencilan memakai batas IQR 1,5, yaitu "
+        f"{num(results['outlier_lower'], 2)} sampai {num(results['outlier_upper'], 2)} µg/m³, "
+        "dan kriteria |z| > 3. Tidak ada observasi yang melewati kedua batas tersebut "
+        f"({results['outlier_iqr_count']} pencilan IQR dan {results['outlier_z_count']} pencilan z).",
     )
     add_table(
         document,
@@ -644,7 +660,7 @@ def bab3(document: Document) -> None:
         "yₜ sebagai fungsi linear dari q galat sebelumnya; ARMA(p,q) menggabungkan keduanya. "
         "Stasioneritas AR diperiksa dari akar polinomial AR, sedangkan invertibilitas MA diperiksa "
         "dari akar polinomial MA. Semua akar harus berada di luar lingkaran satuan (Box et al., "
-        "2015; Shumway & Stoffer, 2017).",
+        "2015; Shumway & Stoffer, 2017; Wei, 2006).",
     )
     body(
         document,
@@ -661,9 +677,9 @@ def bab3(document: Document) -> None:
         document,
         "SARIMA(p,d,q)(P,D,Q)ₘ menambahkan operator musiman. Dengan m = 52 dan hanya 116 minggu, "
         "D = 1 akan menghabiskan terlalu banyak observasi; karena itu D = 0 dan struktur musiman "
-        "ditangkap melalui P,Q. Kandidat dibatasi p,q,P,Q ∈ {0,1,2} dan disaring dengan "
-        "konvergensi serta Ljung-Box lag 20. Model dengan AICc terendah yang gagal Ljung-Box tidak "
-        "dipilih.",
+        "ditangkap melalui P,Q. Kandidat dibatasi p,q ∈ {0,1,2} dan P,Q ∈ {0,1}, lalu disaring "
+        "dengan konvergensi serta Ljung-Box lag 20. Model dengan AICc terendah yang gagal Ljung-Box "
+        "tidak dipilih.",
     )
     body(
         document,
@@ -783,40 +799,46 @@ def bab4(document: Document, results: dict) -> None:
     )
 
     heading(document, "4.3 AR, MA, dan ARMA", 2)
-    ar = read_table("grid_ar.csv").head(5)
-    arma = read_table("grid_arma.csv").head(5)
+    ar = read_table("grid_ar.csv").head(3)
+    ma = read_table("ma_candidates.csv").sort_values("AICc")
+    arma = read_table("grid_arma.csv").query("p > 0").head(3)
+    roots = read_table("roots.csv")
     rows = []
     for _, row in ar.iterrows():
-        rows.append([f"AR({int(row['p'])})", "—", num(row["AIC"], 2), num(row["AICc"], 2), num(row["BIC"], 2)])
+        rows.append([f"AR({int(row['p'])})", "0", num(row["AIC"], 2), num(row["AICc"], 2), num(row["BIC"], 2)])
+    for _, row in ma.iterrows():
+        rows.append([row["Model"], "0", num(row["AIC"], 2), num(row["AICc"], 2), num(row["BIC"], 2)])
     for _, row in arma.iterrows():
         rows.append([
             f"ARMA({int(row['p'])},{int(row['q'])})",
-            f"d={int(row['d'])}",
+            "0",
             num(row["AIC"], 2),
             num(row["AICc"], 2),
             num(row["BIC"], 2),
         ])
     add_table(
         document,
-        "Kandidat AR dan ARMA teratas menurut AICc",
-        ["Model", "Diferensiasi", "AIC", "AICc", "BIC"],
+        "Kandidat AR, MA, dan ARMA teratas menurut AICc",
+        ["Model", "d", "AIC", "AICc", "BIC"],
         rows,
-        "Hasil pengolahan penulis (2026).",
-        widths=[3.2, 2.2, 2.4, 2.4, 2.4],
+        "Hasil pengolahan penulis (2026). MA(q) di sini adalah model galat, bukan penghalus MA(3)/MA(8) pada Tabel 5.",
+        widths=[3.4, 1.0, 2.4, 2.4, 2.4],
         font_size=8.5,
     )
+    ma_best = ma.iloc[0]
+    ma_best_roots = roots[(roots["Model"] == ma_best["Model"]) & (roots["Komponen"] == "MA")].iloc[0]
     body(
         document,
         "AR(12) terpilih dalam grid AR dengan AICc 646,33, tetapi RMSE ujinya 6,572. ARMA(2,3) "
-        "terpilih dalam grid ARMA dengan AICc 688,05 dan RMSE 7,067 (Tabel 7). Keduanya stabil: "
-        "modulus akar AR minimum 1,147 dan modulus akar MA minimum 1,124, sehingga syarat "
-        "stasioneritas dan invertibilitas terpenuhi (Tabel 8). Meskipun demikian, akurasi keduanya "
-        "jauh di bawah naive dan SARIMA, sehingga tidak dipilih sebagai model final.",
+        "terpilih dalam grid ARMA dengan AICc 688,05 dan RMSE 7,067 (Tabel 7). Kandidat MA(q) "
+        f"juga diestimasi; {ma_best['Model']} memiliki AICc {num(ma_best['AICc'], 2)} dan "
+        f"|root| minimum {num(ma_best_roots['|root| minimum'], 3)}. MA(1) dan MA(2) gagal "
+        "Ljung-Box, sedangkan MA(3) tidak menolak autokorelasi (p = 0,328). Seluruh akar MA berada "
+        "di luar lingkaran satuan, sehingga syarat invertibilitas terpenuhi (Tabel 8).",
     )
-    roots = read_table("roots.csv")
     add_table(
         document,
-        "Pemeriksaan akar model AR, ARMA, dan SARIMA",
+        "Pemeriksaan akar model AR, MA, ARMA, dan SARIMA",
         ["Model", "Komponen", "Jumlah akar", "|root| minimum", "|root| maksimum", "Kesimpulan"],
         [
             [
@@ -941,24 +963,26 @@ def bab4(document: Document, results: dict) -> None:
     heading(document, "4.7 Perbandingan Model", 2)
     rows = []
     for _, row in comp.iterrows():
+        has_aic = not pd.isna(row["d"])
         rows.append([
             row["Model"],
-            num(row["AICc"], 2),
+            "—" if pd.isna(row["d"]) else str(int(row["d"])),
+            num(row["AICc"], 2) if has_aic else "—",
+            num(row["BIC"], 2) if has_aic else "—",
             num(row["RMSE"], 3),
             num(row["MAE"], 3),
             num(row["MAPE"], 2),
             num(row["MASE"], 3),
-            pval(row["LB20_p"]) if row["AIC_sebanding"] == "Ya" else "—",
-            row["AIC_sebanding"],
+            pval(row["LB20_p"]),
         ])
     add_table(
         document,
         "Perbandingan seluruh model pada data uji",
-        ["Model", "AICc", "RMSE", "MAE", "MAPE (%)", "MASE", "LB20 p", "AIC sebanding"],
+        ["Model", "d", "AICc", "BIC", "RMSE", "MAE", "MAPE (%)", "MASE", "LB20 p"],
         rows,
-        "Hasil pengolahan penulis (2026). AICc hanya sebanding untuk model ARIMA dengan d dan data yang sama.",
-        widths=[4.2, 1.4, 1.4, 1.4, 1.4, 1.2, 1.2, 1.6],
-        font_size=7.5,
+        "Hasil pengolahan penulis (2026). AICc dan BIC hanya sebanding untuk model dengan d dan data yang sama; tanda — berarti tidak sebanding.",
+        widths=[3.5, 0.7, 1.3, 1.3, 1.3, 1.3, 1.3, 1.2, 1.2],
+        font_size=7.2,
     )
     body(
         document,
@@ -1071,10 +1095,11 @@ def bab5(document: Document, results: dict) -> None:
 
 
 def daftar_pustaka(document: Document) -> None:
+    document.add_page_break()
     heading(document, "DAFTAR PUSTAKA", 1)
     references = [
         "Box, G. E. P., Jenkins, G. M., Reinsel, G. C., & Ljung, G. M. (2015). Time series analysis: Forecasting and control (5th ed.). Wiley.",
-        "Cohen, A. J., Brauer, M., Burnett, R., Anderson, H. R., Frostad, J., Estep, K., ... Forouzanfar, M. H. (2017). Estimates and 25-year trends of the global burden of disease attributable to ambient air pollution: An analysis of data from the Global Burden of Diseases Study 2015. The Lancet, 389(10082), 1907–1918. https://doi.org/10.1016/S0140-6736(17)30505-6",
+        "Cohen, A. J., Brauer, M., Burnett, R., Anderson, H. R., Frostad, J., Estep, K., Balakrishnan, K., Brunekreef, B., Dandona, L., Dandona, R., Feigin, V., Freedman, G., Hubbell, B., Jobling, A., Kan, H., Knibbs, L., Liu, Y., Martin, R., Morawska, L., ... Forouzanfar, M. H. (2017). Estimates and 25-year trends of the global burden of disease attributable to ambient air pollution: An analysis of data from the Global Burden of Diseases Study 2015. The Lancet, 389(10082), 1907–1918. https://doi.org/10.1016/S0140-6736(17)30505-6",
         "Copernicus Atmosphere Monitoring Service. (2024). CAMS global reanalysis (EAC4). ECMWF. https://ads.atmosphere.copernicus.eu/datasets/cams-global-reanalysis-eac4",
         "Hyndman, R. J., & Athanasopoulos, G. (2021). Forecasting: Principles and practice (3rd ed.). OTexts. https://otexts.com/fpp3/",
         "Open-Meteo. (2026). Air quality API documentation. https://open-meteo.com/en/docs/air-quality-api",
@@ -1093,17 +1118,23 @@ def daftar_pustaka(document: Document) -> None:
 
 
 def lampiran(document: Document) -> None:
+    document.add_page_break()
     heading(document, "LAMPIRAN A. PEMBAGIAN PERAN ANGGOTA", 1)
+    body(
+        document,
+        "Pembagian peran kelima anggota kelompok disajikan pada Tabel 15.",
+        first_line=False,
+    )
     add_table(
         document,
         "Pembagian peran anggota kelompok",
         ["Peran", "Anggota", "Tugas utama"],
         [
-            ["Data dan eksplorasi", "[Nama Anggota 1]", "Unduh data, kontrol kualitas, EDA, dekomposisi"],
-            ["Exponential Smoothing", "[Nama Anggota 2]", "MA, SES, Holt, Holt-Winters"],
-            ["Keluarga ARIMA", "[Nama Anggota 3]", "AR, ARMA, ARIMA, SARIMA, Fourier"],
-            ["Evaluasi dan diagnostik", "[Nama Anggota 4]", "Uji residual, perbandingan, DM"],
-            ["Penulisan dan reproducibility", "[Nama Anggota 5]", "Laporan, dokumentasi, reproduksi"],
+            ["Data dan eksplorasi", MEMBERS[0][0], "Unduh data, kontrol kualitas, EDA, dekomposisi"],
+            ["Exponential Smoothing", MEMBERS[1][0], "MA, SES, Holt, Holt-Winters"],
+            ["Keluarga ARIMA", MEMBERS[2][0], "AR, MA, ARMA, ARIMA, SARIMA, Fourier"],
+            ["Evaluasi dan diagnostik", MEMBERS[3][0], "Uji residual, perbandingan, DM"],
+            ["Penulisan dan reproduksibilitas", MEMBERS[4][0], "Laporan, dokumentasi, reproduksi"],
         ],
         "Penulis (2026).",
         widths=[4.0, 4.0, 7.0],
@@ -1116,16 +1147,21 @@ def lampiran(document: Document) -> None:
         document,
         "Kode berikut adalah versi yang dipakai untuk menghasilkan seluruh output. Pipeline utama "
         "dijalankan berurutan: fetch_openmeteo.py, preprocess.py, check_homogeneity.py, lalu "
-        "analysis.py. build_report.py menghasilkan dokumen ini. Notebook walkthrough tersedia di "
+        "analysis.py. build_report.py menghasilkan dokumen ini dan tersedia di repo, tetapi tidak "
+        "dimuat agar lampiran berfokus pada pipeline analisis. Notebook pendukung tersedia di "
         "notebooks/01_analisis_pm25_surakarta.ipynb.",
         first_line=False,
     )
-    for filename, title in (
-        ("fetch_openmeteo.py", "B.1 fetch_openmeteo.py"),
-        ("preprocess.py", "B.2 preprocess.py"),
-        ("check_homogeneity.py", "B.3 check_homogeneity.py"),
-        ("analysis.py", "B.4 analysis.py"),
+    for index, (filename, title) in enumerate(
+        (
+            ("fetch_openmeteo.py", "B.1 fetch_openmeteo.py"),
+            ("preprocess.py", "B.2 preprocess.py"),
+            ("check_homogeneity.py", "B.3 check_homogeneity.py"),
+            ("analysis.py", "B.4 analysis.py"),
+        )
     ):
+        if index:
+            document.add_page_break()
         add_code_listing(document, ROOT / "src" / filename, title)
 
     document.add_page_break()
@@ -1134,9 +1170,10 @@ def lampiran(document: Document) -> None:
         document,
         "Seluruh keluaran numerik tersedia di folder outputs/. Workbook Excel memuat sheet "
         "Ringkasan, Data_Mingguan, Statistik_Deskriptif, Uji_Stasioneritas, Perbandingan_Model, "
-        "Grid_AR, Grid_ARMA, Grid_ARIMA, Grid_SARIMA, Grid_Fourier, SARIMA_D1, Parameter_ES, "
-        "Akar_Model, Koefisien_Final, Diagnostik_Final, Peramalan, Uji_DM, Bulanan_Konteks, "
-        "Rasio_PM, dan Catatan.",
+        "Grid_AR, Grid_ARMA, Grid_ARIMA, Grid_SARIMA, Grid_Fourier, SARIMA_D1, Kandidat_MA, "
+        "Parameter_ES, Akar_Model, Diagnostik_Model, Koefisien_Final, Diagnostik_Final, Peramalan, "
+        "Uji_DM, Bulanan_Konteks, Rasio_PM, dan Catatan. Daftar berkas utama disajikan pada "
+        "Tabel 16.",
         first_line=False,
     )
     add_table(
@@ -1148,10 +1185,62 @@ def lampiran(document: Document) -> None:
             ["outputs/Hasil_Analisis_PM25_Surakarta.xlsx", "Workbook Excel seluruh tabel"],
             ["outputs/figures/fig00–fig09", "Gambar alur, data, dekomposisi, ACF/PACF, model, diagnostik, peramalan"],
             ["outputs/tables/*.csv", "Tabel statistik, grid kandidat, koefisien, diagnostik, peramalan"],
-            ["notebooks/01_analisis_pm25_surakarta.ipynb", "Walkthrough reproducible dengan output inline"],
+            ["notebooks/01_analisis_pm25_surakarta.ipynb", "Notebook analisis dengan output inline"],
         ],
         "Penulis (2026).",
         widths=[6.5, 8.5],
+        font_size=8.5,
+    )
+    document.add_page_break()
+    body(
+        document,
+        "Analisis dijalankan pada Python 3.11.9 dengan pandas 3.0.5, NumPy 2.4.6, statsmodels "
+        "0.15.0, SciPy 1.17.1, dan matplotlib 3.11.1; versi lengkap tercatat di requirements.txt. "
+        "Pipeline tidak memakai prosedur stokastik sehingga random seed tidak diperlukan. "
+        "Diagnostik ringkas model final tiap keluarga disajikan pada Tabel 17.",
+        first_line=False,
+    )
+    diag_model = read_table("model_diagnostics.csv")
+    add_table(
+        document,
+        "Diagnostik residual model final pada data latih",
+        ["Model", "LB10 p", "LB20 p", "LB52 p", "JB p", "ARCH p"],
+        [
+            [
+                row["Model"],
+                pval(row["LB10_p"]),
+                pval(row["LB20_p"]),
+                pval(row["LB52_p"]),
+                pval(row["JB_p"]),
+                pval(row["ARCH_p"]),
+            ]
+            for _, row in diag_model.iterrows()
+        ],
+        "Hasil pengolahan penulis (2026). Diagnostik memakai residual data latih; Tabel 11 memakai model final pada seluruh data. AR(12) memakai 92 observasi karena lag 12.",
+        widths=[4.2, 1.9, 1.9, 1.9, 1.9, 1.9],
+        font_size=8.5,
+    )
+    body(
+        document,
+        "Ringkasan koefisien model SARIMA final disajikan pada Tabel 18.",
+        first_line=False,
+    )
+    coef_final = read_table("final_coefficients.csv")
+    add_table(
+        document,
+        "Ringkasan koefisien model SARIMA final",
+        ["Parameter", "Koefisien", "Std. error", "p-value"],
+        [
+            [
+                row["Parameter"],
+                num(row["Koefisien"], 4),
+                num(row["Std_Error"], 4),
+                pval(row["p_value"]),
+            ]
+            for _, row in coef_final.iterrows()
+        ],
+        "Hasil pengolahan penulis (2026).",
+        widths=[5.0, 3.0, 3.0, 3.0],
         font_size=8.5,
     )
 

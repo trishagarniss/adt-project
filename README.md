@@ -4,6 +4,14 @@ Analisis deret waktu mingguan PM2.5 Kota Surakarta menggunakan data model CAMS g
 melalui Open-Meteo Air Quality API. Proyek ini membandingkan MA, Exponential Smoothing,
 AR, ARMA, ARIMA, SARIMA, dan Fourier-ARIMA, lalu meramalkan 12 minggu ke depan.
 
+## Tim
+
+- Trisha Garnis W (L0224012)
+- Kunto Rossindu H (L0224020)
+- Maulana Naufal H (L02240XX)
+- Michael Christian S. G. (L02240XX)
+- Raihan Ade (L02240XX)
+
 ## Data
 
 - **Sumber:** [Open-Meteo Air Quality API](https://open-meteo.com/en/docs/air-quality-api)
@@ -12,6 +20,8 @@ AR, ARMA, ARIMA, SARIMA, dan Fourier-ARIMA, lalu meramalkan 12 minggu ke depan.
 - **Satuan:** µg/m³.
 - **Periode model:** 8 Agustus 2022 – 21 Oktober 2024.
 - **Jumlah data:** 116 minggu, tanpa nilai hilang; 104 minggu latih dan 12 minggu uji.
+- **Tanggal akses:** 29 Oktober 2026; data mentah dipatok sampai 28 Oktober 2026
+  agar hasil laporan dapat direproduksi.
 - **Catatan:** periode setelah Oktober 2024 dikeluarkan karena patahan rasio PM10/PM2.5
   pada model CAMS (sekitar 1,46 menjadi 1,04).
 
@@ -76,6 +86,13 @@ python src/build_report.py
 `fetch_openmeteo.py` memerlukan internet dan akan memperbarui data mentah. Untuk
 reproduksi hasil yang sudah ada, cukup jalankan `analysis.py` karena data mentah dan
 data olahan sudah tersedia di repo.
+
+### Lingkungan
+
+Pipeline dijalankan pada Python 3.11.9 dengan pandas 3.0.5, NumPy 2.4.6, statsmodels
+0.15.0, SciPy 1.17.1, dan matplotlib 3.11.1. Versi lengkap tercatat di
+`requirements.txt`. Pipeline tidak memakai prosedur stokastik sehingga random seed
+tidak diperlukan.
 
 ### Notebook
 

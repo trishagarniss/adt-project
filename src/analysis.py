@@ -126,7 +126,7 @@ def fit_sarimax(train, order, seasonal_order, trend, exog=None, exog_forecast=No
         enforce_invertibility=False,
     )
     fit = model.fit(disp=False)
-    forecast = fit.forecast(horizon, exog=exog_forecast)
+    forecast = fit.forecast(HORIZON, exog=exog_forecast)
     return fit, np.asarray(forecast)
 
 
@@ -137,13 +137,14 @@ def lb_pvalue(resid, lag: int = 20):
         return np.nan
 
 
-def record(results, name, spec, fit, forecast, train, test, k, aic, aicc, bic, note="", comparable=True):
+def record(results, name, spec, fit, forecast, train, test, k, aic, aicc, bic, note="", comparable=True, d=None):
     metrics = score(test.values, forecast, train)
     resid = getattr(fit, "resid", None)
     results.append(
         {
             "Model": name,
             "Spesifikasi": spec,
+            "d": d,
             "k": k,
             "AIC": aic,
             "AICc": aicc,
@@ -155,6 +156,37 @@ def record(results, name, spec, fit, forecast, train, test, k, aic, aicc, bic, n
             "_forecast": np.asarray(forecast, dtype=float),
         }
     )
+
+
+def outlier_summary(series: pd.Series) -> dict:
+    q1, q3 = series.quantile([0.25, 0.75])
+    iqr = q3 - q1
+    lower, upper = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+    z_score = (series - series.mean()) / series.std()
+    return {
+        "outlier_lower": float(lower),
+        "outlier_upper": float(upper),
+        "outlier_iqr_count": int(((series < lower) | (series > upper)).sum()),
+        "outlier_z_count": int((z_score.abs() > 3).sum()),
+    }
+
+
+def residual_diagnostics(name: str, fit) -> dict:
+    resid = pd.Series(getattr(fit, "resid", [])).dropna()
+    if resid.empty:
+        return {"Model": name, "n": 0}
+    lb = acorr_ljungbox(resid, lags=[10, 20, 52], return_df=True)
+    _, jb_p, _, _ = jarque_bera(resid)
+    _, arch_p, _, _ = het_arch(resid, nlags=5)
+    return {
+        "Model": name,
+        "n": int(resid.size),
+        "LB10_p": float(lb["lb_pvalue"].iloc[0]),
+        "LB20_p": float(lb["lb_pvalue"].iloc[1]),
+        "LB52_p": float(lb["lb_pvalue"].iloc[2]),
+        "JB_p": float(jb_p),
+        "ARCH_p": float(arch_p),
+    }
 
 
 def root_summary(name: str, roots, kind: str) -> dict | None:
@@ -370,6 +402,8 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
     fitted = {}
     es_rows = []
     root_rows = []
+    diag_fits = {}
+    ma_fits = {}
 
     naive = np.repeat(train.values[-1], HORIZON)
     record(results, "Naive (random walk)", "ŷₜ₊ₕ = yₜ", None, naive, train, test, 0, np.nan, np.nan, np.nan, "Benchmark", False)
@@ -389,6 +423,7 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
     k_es = len(getattr(ses, "params", {})) if hasattr(getattr(ses, "params", {}), "__len__") else 2
     record(results, "SES", "Simple exponential smoothing", ses, pred, train, test, k_es, ses.aic, aicc_from_aic(ses.aic, k_es, len(train)), np.nan, "Smoothing", False)
     fitted["SES"] = pred
+    diag_fits["SES"] = ses
     es_rows.extend(es_param_rows("SES", ses))
 
     holt = ExponentialSmoothing(train, trend="add", initialization_method="estimated").fit(optimized=True)
@@ -396,6 +431,7 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
     k_holt = len(getattr(holt, "params", {})) if hasattr(getattr(holt, "params", {}), "__len__") else 3
     record(results, "Holt", "Trend aditif", holt, pred, train, test, k_holt, holt.aic, aicc_from_aic(holt.aic, k_holt, len(train)), np.nan, "Smoothing", False)
     fitted["Holt"] = pred
+    diag_fits["Holt"] = holt
     es_rows.extend(es_param_rows("Holt", holt))
 
     hw = ExponentialSmoothing(
@@ -405,6 +441,7 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
     k_hw = len(getattr(hw, "params", {})) if hasattr(getattr(hw, "params", {}), "__len__") else 4
     record(results, "Holt-Winters", "Trend + musiman aditif, s=52", hw, pred, train, test, k_hw, hw.aic, aicc_from_aic(hw.aic, k_hw, len(train)), np.nan, "Smoothing", False)
     fitted["Holt-Winters"] = pred
+    diag_fits["Holt-Winters"] = hw
     es_rows.extend(es_param_rows("Holt-Winters", hw))
 
     best_ar = None
@@ -423,8 +460,9 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
     if best_ar:
         pred = np.asarray(best_ar["fit"].forecast(HORIZON))
         name = f"AR({best_ar['p']})"
-        record(results, name, f"AR({best_ar['p']}) dengan konstanta", best_ar["fit"], pred, train, test, best_ar["k"], best_ar["AIC"], best_ar["AICc"], best_ar["BIC"])
+        record(results, name, f"AR({best_ar['p']}) dengan konstanta", best_ar["fit"], pred, train, test, best_ar["k"], best_ar["AIC"], best_ar["AICc"], best_ar["BIC"], d=0)
         fitted[name] = pred
+        diag_fits[name] = best_ar["fit"]
         phi = np.asarray(best_ar["fit"].params[1:], dtype=float)
         root_rows.append(root_summary(name, np.roots(np.r_[-phi[::-1], 1.0]), "AR"))
 
@@ -442,6 +480,8 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
                     ).fit(disp=False)
                     if not np.isfinite(fit.aicc):
                         continue
+                    if d == 0 and p == 0:
+                        ma_fits[q] = fit
                     rows.append(
                         {
                             "p": p, "d": d, "q": q, "AIC": fit.aic, "AICc": fit.aicc,
@@ -461,17 +501,36 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
     if best_arma:
         pred = np.asarray(best_arma["fit"].forecast(HORIZON))
         name = f"ARMA({best_arma['p']},{best_arma['q']})"
-        record(results, name, f"ARMA({best_arma['p']},{best_arma['q']})", best_arma["fit"], pred, train, test, best_arma["k"], best_arma["AIC"], best_arma["AICc"], best_arma["BIC"])
+        record(results, name, f"ARMA({best_arma['p']},{best_arma['q']})", best_arma["fit"], pred, train, test, best_arma["k"], best_arma["AIC"], best_arma["AICc"], best_arma["BIC"], d=0)
         fitted[name] = pred
+        diag_fits[name] = best_arma["fit"]
         root_rows.append(root_summary(name, best_arma["fit"].arroots, "AR"))
         root_rows.append(root_summary(name, best_arma["fit"].maroots, "MA"))
+
+    ma_rows = []
+    for q, fit in sorted(ma_fits.items()):
+        row = {
+            "Model": f"MA({q}) galat",
+            "q": q,
+            "d": 0,
+            "AIC": fit.aic,
+            "AICc": fit.aicc,
+            "BIC": fit.bic,
+            "k": len(fit.params),
+            "LB20_p": lb_pvalue(fit.resid),
+        }
+        ma_rows.append(row)
+        root_rows.append(root_summary(row["Model"], fit.maroots, "MA"))
+        diag_fits[row["Model"]] = fit
+    ma_candidates = pd.DataFrame(ma_rows).sort_values("AICc").reset_index(drop=True)
 
     best_arima = grid_search(1, 3, "ARIMA")
     if best_arima:
         pred = np.asarray(best_arima["fit"].forecast(HORIZON))
         name = f"ARIMA({best_arima['p']},1,{best_arima['q']})"
-        record(results, name, f"ARIMA({best_arima['p']},1,{best_arima['q']})", best_arima["fit"], pred, train, test, best_arima["k"], best_arima["AIC"], best_arima["AICc"], best_arima["BIC"])
+        record(results, name, f"ARIMA({best_arima['p']},1,{best_arima['q']})", best_arima["fit"], pred, train, test, best_arima["k"], best_arima["AIC"], best_arima["AICc"], best_arima["BIC"], d=1)
         fitted[name] = pred
+        diag_fits[name] = best_arima["fit"]
 
     sarima_rows = []
     best_sarima = None
@@ -511,8 +570,9 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
         best_sarima["k"] = len(best_sarima["fit"].params)
     pred = np.asarray(best_sarima["fit"].forecast(HORIZON))
     sarima_name = f"SARIMA({best_sarima['p']},1,{best_sarima['q']})({best_sarima['P']},0,{best_sarima['Q']})[{SEASON}]"
-    record(results, sarima_name, "Model musiman terpilih (AICc + Ljung-Box)", best_sarima["fit"], pred, train, test, best_sarima["k"], best_sarima["AIC"], best_sarima["AICc"], best_sarima["BIC"])
+    record(results, sarima_name, "Model musiman terpilih (AICc + Ljung-Box)", best_sarima["fit"], pred, train, test, best_sarima["k"], best_sarima["AIC"], best_sarima["AICc"], best_sarima["BIC"], d=1)
     fitted[sarima_name] = pred
+    diag_fits[sarima_name] = best_sarima["fit"]
     root_rows.append(root_summary(sarima_name, best_sarima["fit"].arroots, "AR"))
     root_rows.append(root_summary(sarima_name, best_sarima["fit"].maroots, "MA"))
 
@@ -559,8 +619,9 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
     grids["Fourier"] = pd.DataFrame(fourier_rows).sort_values("RMSE")
     if best_fourier:
         name = "Fourier K=2 + ARIMA(1,1,1)"
-        record(results, name, "Regresi Fourier (K=2) + ARIMA(1,1,1)", best_fourier["fit"], best_fourier["pred"], train, test, len(best_fourier["fit"].params), best_fourier["row"]["AIC"], best_fourier["row"]["AICc"], best_fourier["row"]["BIC"], "Bonus")
+        record(results, name, "Regresi Fourier (K=2) + ARIMA(1,1,1)", best_fourier["fit"], best_fourier["pred"], train, test, len(best_fourier["fit"].params), best_fourier["row"]["AIC"], best_fourier["row"]["AICc"], best_fourier["row"]["BIC"], "Bonus", d=1)
         fitted[name] = best_fourier["pred"]
+        diag_fits[name] = best_fourier["fit"]
 
     comparison = pd.DataFrame(results)
     comparison = comparison.sort_values(["RMSE", "AICc"], na_position="last").reset_index(drop=True)
@@ -570,6 +631,8 @@ def fit_all_models(train: pd.Series, test: pd.Series) -> tuple[pd.DataFrame, dic
         "grids": grids,
         "es_params": pd.DataFrame(es_rows),
         "roots": pd.DataFrame([row for row in root_rows if row is not None]),
+        "ma_candidates": ma_candidates,
+        "diag_fits": diag_fits,
     }
 
 
@@ -764,6 +827,7 @@ def main() -> None:
 
     build_flowchart()
     desc = descriptive(series)
+    outliers = outlier_summary(series)
     stationarity = stationarity_table(series)
     plot_series(series, train, test)
     seasonal_strength = plot_decomposition(series)
@@ -771,6 +835,9 @@ def main() -> None:
     plot_acf_pacf(series)
 
     comparison, fitted, arma_grid, arima_grid, sarima_grid, extra = fit_all_models(train, test)
+    model_diagnostics = pd.DataFrame(
+        [residual_diagnostics(name, fit) for name, fit in extra["diag_fits"].items()]
+    )
     best_sarima = extra["best_sarima"]
     sarima_name = f"SARIMA({best_sarima['p']},1,{best_sarima['q']})({best_sarima['P']},0,{best_sarima['Q']})[{SEASON}]"
     print(f"SARIMA terpilih: {sarima_name} | AICc={best_sarima['AICc']:.2f}")
@@ -818,6 +885,8 @@ def main() -> None:
     extra["grids"]["AR"].to_csv(TAB / "grid_ar.csv", index=False)
     extra["es_params"].to_csv(TAB / "es_params.csv", index=False)
     extra["roots"].to_csv(TAB / "roots.csv", index=False)
+    extra["ma_candidates"].to_csv(TAB / "ma_candidates.csv", index=False)
+    model_diagnostics.to_csv(TAB / "model_diagnostics.csv", index=False)
 
     monthly_context = pd.read_csv(DATA / "pm25_surakarta_monthly.csv")
     pm_ratio = pd.read_csv(DATA / "pm25_pm10_monthly.csv")
@@ -840,6 +909,7 @@ def main() -> None:
         "std": float(series.std()),
         "min": float(series.min()),
         "max": float(series.max()),
+        **outliers,
         "seasonal_strength": seasonal_strength,
         "final_model": final_model_name,
         "final_spec": f"SARIMA{FINAL_ORDER}({FINAL_SEASONAL[0]},0,{FINAL_SEASONAL[2]})[{SEASON}]",
@@ -887,8 +957,10 @@ def main() -> None:
         "Grid_SARIMA": sarima_grid,
         "Grid_Fourier": extra["grids"]["Fourier"],
         "SARIMA_D1": extra["grids"]["SARIMA_D1"],
+        "Kandidat_MA": extra["ma_candidates"],
         "Parameter_ES": extra["es_params"],
         "Akar_Model": extra["roots"],
+        "Diagnostik_Model": model_diagnostics,
         "Koefisien_Final": coefficients,
         "Diagnostik_Final": diagnostics,
         "Peramalan": forecast_frame,
@@ -905,6 +977,9 @@ def main() -> None:
         "Interval peramalan disajikan pada tingkat kepercayaan 80% dan 95%.",
         "Parameter_ES memuat parameter smoothing dan nilai awal hasil estimasi statsmodels.",
         "Akar_Model memuat modulus akar AR/MA; nilai > 1 menunjukkan stasioneritas/invertibilitas.",
+        "Kandidat_MA memuat model MA(q) galat, terpisah dari MA(3)/MA(8) yang merupakan penghalus.",
+        "Diagnostik_Model memuat Ljung-Box, Jarque-Bera, dan ARCH untuk model final tiap keluarga.",
+        "Pemeriksaan pencilan memakai batas IQR 1,5 dan |z| > 3; tidak ditemukan pencilan.",
     ]
     style_workbook(OUT / "Hasil_Analisis_PM25_Surakarta.xlsx", sheets, notes)
 

@@ -8,10 +8,13 @@ from __future__ import annotations
 
 import csv
 import json
+import sys
 import urllib.parse
 import urllib.request
-from datetime import date
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "data" / "raw"
@@ -21,7 +24,7 @@ LATITUDE = -7.5545
 LONGITUDE = 110.8060
 TIMEZONE = "Asia/Jakarta"
 START_DATE = "2022-08-01"
-END_DATE = date.today().isoformat()
+END_DATE = "2026-10-28"
 HOURLY_VARIABLE = "pm2_5"
 
 
