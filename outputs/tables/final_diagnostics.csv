@@ -1,0 +1,8 @@
+Uji,Statistik,p_value,Interpretasi
+Ljung-Box lag 10,11.66860738977801,0.3078473975835783,Tidak ada autokorelasi
+Ljung-Box lag 20,28.559231209636675,0.09680800999288214,Tidak ada autokorelasi
+Ljung-Box lag 52,58.60055081384586,0.24620371181317136,Tidak ada autokorelasi
+Jarque-Bera,4.2656008251266115,0.11850496594652236,Normal
+ARCH LM (5 lag),12.918837688407226,0.02415133482601664,Heteroskedastik
+Shapiro-Wilk,0.9808800883082202,0.09689258147969769,Normal
+Durbin-Watson,2.146108756108673,,Mendekati 2 = baik

@@ -1,0 +1,5 @@
+Model,Komponen,Jumlah akar,|root| minimum,|root| maksimum,Kesimpulan
+AR(12),AR,12,1.151387360769225,11.880014932761608,Stabil (di luar lingkaran satuan)
+"ARMA(2,3)",AR,2,1.1472363169345268,1.5639521148071918,Stabil (di luar lingkaran satuan)
+"ARMA(2,3)",MA,3,1.1238724210491695,9.647901315075107,Stabil (di luar lingkaran satuan)
+"SARIMA(2,1,0)(1,0,0)[52]",AR,54,1.0441657375270919,2.410988693804381,Stabil (di luar lingkaran satuan)

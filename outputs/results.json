@@ -1,0 +1,592 @@
+{
+  "n": 116,
+  "n_train": 104,
+  "n_test": 12,
+  "start": "2022-08-08",
+  "end": "2024-10-21",
+  "mean": 23.817138752052543,
+  "std": 8.446268570933459,
+  "min": 9.691666666666666,
+  "max": 47.25595238095238,
+  "seasonal_strength": 0.9266120344036196,
+  "final_model": "SARIMA(2,1,0)(1,0,0)[52]",
+  "final_spec": "SARIMA(2, 1, 0)(1,0,0)[52]",
+  "aic": 383.77479224022755,
+  "aicc": 384.4890779545133,
+  "bic": 392.2182876969208,
+  "loglik": -187.88739612011378,
+  "sigma2": 27.725808523153763,
+  "test_mae": 2.9506299080025773,
+  "test_rmse": 4.813991610955503,
+  "test_mape": 15.954616642204703,
+  "test_smape": 16.276967979444493,
+  "test_mase": 0.3803270356858273,
+  "lb10_p": 0.3078473975835783,
+  "lb20_p": 0.09680800999288214,
+  "lb52_p": 0.24620371181317136,
+  "jb_p": 0.11850496594652236,
+  "arch_p": 0.02415133482601664,
+  "shapiro_p": 0.09689258147969769,
+  "forecast_first": 14.767514896397602,
+  "forecast_last": 14.48941153369332,
+  "forecast_mean": 14.54624506831299,
+  "forecast": [
+    {
+      "Minggu": "2024-10-28",
+      "Peramalan": 14.767514896397602,
+      "Batas_bawah_80": 8.019466396440194,
+      "Batas_atas_80": 21.51556339635501,
+      "Batas_bawah_95": 4.447265300958463,
+      "Batas_atas_95": 25.08776449183674
+    },
+    {
+      "Minggu": "2024-11-04",
+      "Peramalan": 14.669843953591393,
+      "Batas_bawah_80": 6.4985353485163575,
+      "Batas_atas_80": 22.84115255866643,
+      "Batas_bawah_95": 2.1729058645622086,
+      "Batas_atas_95": 27.166782042620575
+    },
+    {
+      "Minggu": "2024-11-11",
+      "Peramalan": 14.26336144286202,
+      "Batas_bawah_80": 5.1664558959509,
+      "Batas_atas_80": 23.36026698977314,
+      "Batas_bawah_95": 0.3508449885345062,
+      "Batas_atas_95": 28.175877897189537
+    },
+    {
+      "Minggu": "2024-11-18",
+      "Peramalan": 14.351184649014446,
+      "Batas_bawah_80": 4.157323187050951,
+      "Batas_atas_80": 24.545046110977943,
+      "Batas_bawah_95": -1.2389811047520531,
+      "Batas_atas_95": 29.941350402780945
+    },
+    {
+      "Minggu": "2024-11-25",
+      "Peramalan": 14.408082592417095,
+      "Batas_bawah_80": 3.2547634059432173,
+      "Batas_atas_80": 25.561401778890975,
+      "Batas_bawah_95": -2.6494471249133476,
+      "Batas_atas_95": 31.465612309747538
+    },
+    {
+      "Minggu": "2024-12-02",
+      "Peramalan": 14.352182803850948,
+      "Batas_bawah_80": 2.3497122984675407,
+      "Batas_atas_80": 26.354653309234354,
+      "Batas_bawah_95": -4.004011787553534,
+      "Batas_atas_95": 32.708377395255425
+    },
+    {
+      "Minggu": "2024-12-09",
+      "Peramalan": 14.187866653456082,
+      "Batas_bawah_80": 1.3774374998652608,
+      "Batas_atas_80": 26.9982958070469,
+      "Batas_bawah_95": -5.403994058656741,
+      "Batas_atas_95": 33.7797273655689
+    },
+    {
+      "Minggu": "2024-12-16",
+      "Peramalan": 14.139236632231109,
+      "Batas_bawah_80": 0.5676291020051831,
+      "Batas_atas_80": 27.710844162457036,
+      "Batas_bawah_95": -6.616745949126583,
+      "Batas_atas_95": 34.8952192135888
+    },
+    {
+      "Minggu": "2024-12-23",
+      "Peramalan": 15.010848333584164,
+      "Batas_bawah_80": 0.7215015856876654,
+      "Batas_atas_80": 29.300195081480663,
+      "Batas_bawah_95": -6.842821656339471,
+      "Batas_atas_95": 36.864518323507795
+    },
+    {
+      "Minggu": "2024-12-30",
+      "Peramalan": 15.13499947144834,
+      "Batas_bawah_80": 0.16159965410865773,
+      "Batas_atas_80": 30.10839928878802,
+      "Batas_bawah_95": -7.764839409114488,
+      "Batas_atas_95": 38.03483835201117
+    },
+    {
+      "Minggu": "2025-01-06",
+      "Peramalan": 14.78040785720935,
+      "Batas_bawah_80": -0.8474406528308336,
+      "Batas_atas_80": 30.408256367249532,
+      "Batas_bawah_95": -9.12032392685301,
+      "Batas_atas_95": 38.681139641271706
+    },
+    {
+      "Minggu": "2025-01-13",
+      "Peramalan": 14.48941153369332,
+      "Batas_bawah_80": -1.7663454531927147,
+      "Batas_atas_80": 30.745168520579355,
+      "Batas_bawah_95": -10.371623396409278,
+      "Batas_atas_95": 39.35044646379592
+    }
+  ],
+  "sarima_coef": [
+    {
+      "Parameter": "ar.L1",
+      "Koefisien": -0.3171284847615903,
+      "Std_Error": 0.13017921190423135,
+      "z": -2.436091601129768,
+      "p_value": 0.01484692424975331,
+      "CI_bawah": -0.5722750516296916,
+      "CI_atas": -0.06198191789348895
+    },
+    {
+      "Parameter": "ar.L2",
+      "Koefisien": -0.19098548485239208,
+      "Std_Error": 0.16198234354992164,
+      "z": -1.1790512513083373,
+      "p_value": 0.23837776840301583,
+      "CI_bawah": -0.5084650443416324,
+      "CI_atas": 0.12649407463684825
+    },
+    {
+      "Parameter": "ar.S.L52",
+      "Koefisien": 0.07371575454798461,
+      "Std_Error": 0.08924100257690648,
+      "z": 0.8260301029726503,
+      "p_value": 0.408787015667994,
+      "CI_bawah": -0.10119339644699825,
+      "CI_atas": 0.24862490554296746
+    },
+    {
+      "Parameter": "sigma2",
+      "Koefisien": 27.725808523153763,
+      "Std_Error": 4.620448176821577,
+      "z": 6.0006751427794285,
+      "p_value": 1.9649877083847104e-09,
+      "CI_bawah": 18.66989650414972,
+      "CI_atas": 36.78172054215781
+    }
+  ],
+  "diagnostics": [
+    {
+      "Uji": "Ljung-Box lag 10",
+      "Statistik": 11.66860738977801,
+      "p_value": 0.3078473975835783,
+      "Interpretasi": "Tidak ada autokorelasi"
+    },
+    {
+      "Uji": "Ljung-Box lag 20",
+      "Statistik": 28.559231209636675,
+      "p_value": 0.09680800999288214,
+      "Interpretasi": "Tidak ada autokorelasi"
+    },
+    {
+      "Uji": "Ljung-Box lag 52",
+      "Statistik": 58.60055081384586,
+      "p_value": 0.24620371181317136,
+      "Interpretasi": "Tidak ada autokorelasi"
+    },
+    {
+      "Uji": "Jarque-Bera",
+      "Statistik": 4.2656008251266115,
+      "p_value": 0.11850496594652236,
+      "Interpretasi": "Normal"
+    },
+    {
+      "Uji": "ARCH LM (5 lag)",
+      "Statistik": 12.918837688407226,
+      "p_value": 0.02415133482601664,
+      "Interpretasi": "Heteroskedastik"
+    },
+    {
+      "Uji": "Shapiro-Wilk",
+      "Statistik": 0.9808800883082202,
+      "p_value": 0.09689258147969769,
+      "Interpretasi": "Normal"
+    },
+    {
+      "Uji": "Durbin-Watson",
+      "Statistik": 2.146108756108673,
+      "p_value": NaN,
+      "Interpretasi": "Mendekati 2 = baik"
+    }
+  ],
+  "dm": [
+    {
+      "Model pembanding": "Naive (random walk)",
+      "DM statistik": 1.3748363252454885,
+      "p-value": 0.1965391105609835,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "MA(3)",
+      "DM statistik": 0.6321706281281098,
+      "p-value": 0.5401922485356909,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "Fourier K=2 + ARIMA(1,1,1)",
+      "DM statistik": -0.3293324949486873,
+      "p-value": 0.7480899730460728,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "Holt",
+      "DM statistik": -0.5758019792378378,
+      "p-value": 0.5763392972596093,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "SES",
+      "DM statistik": -0.6468994086880537,
+      "p-value": 0.5309640397775808,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "ARIMA(1,1,3)",
+      "DM statistik": -0.7990331181489766,
+      "p-value": 0.4411830511923265,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "AR(12)",
+      "DM statistik": -1.0815991908105198,
+      "p-value": 0.30257221703948955,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "MA(8)",
+      "DM statistik": -1.4163891345944282,
+      "p-value": 0.18435177046224815,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "Holt-Winters",
+      "DM statistik": -2.597218561906743,
+      "p-value": 0.024816771023118633,
+      "Kesimpulan": "Berbeda signifikan"
+    },
+    {
+      "Model pembanding": "ARMA(2,3)",
+      "DM statistik": -1.4619338268686506,
+      "p-value": 0.171732648557275,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    },
+    {
+      "Model pembanding": "Seasonal naive",
+      "DM statistik": -2.1533183705939987,
+      "p-value": 0.054332407761631396,
+      "Kesimpulan": "Tidak berbeda signifikan"
+    }
+  ],
+  "comparison": [
+    {
+      "Model": "Naive (random walk)",
+      "Spesifikasi": "ŷₜ₊ₕ = yₜ",
+      "k": 0,
+      "AIC": NaN,
+      "AICc": NaN,
+      "BIC": NaN,
+      "MAE": 2.7686011904761894,
+      "RMSE": 4.643271123307041,
+      "MAPE": 14.982891961522935,
+      "sMAPE": 15.244766127881052,
+      "MASE": 0.3568640990570282,
+      "LB20_p": NaN,
+      "Konvergen": "Benchmark",
+      "AIC_sebanding": "Tidak"
+    },
+    {
+      "Model": "MA(3)",
+      "Spesifikasi": "Rata-rata bergerak 3 minggu",
+      "k": 1,
+      "AIC": NaN,
+      "AICc": NaN,
+      "BIC": NaN,
+      "MAE": 2.940688253262326,
+      "RMSE": 4.660454951373567,
+      "MAPE": 16.46290457917413,
+      "sMAPE": 16.26986005518134,
+      "MASE": 0.37904558725106535,
+      "LB20_p": NaN,
+      "Konvergen": "Smoothing",
+      "AIC_sebanding": "Tidak"
+    },
+    {
+      "Model": "SARIMA(2,1,0)(1,0,0)[52]",
+      "Spesifikasi": "Model musiman terpilih (AICc + Ljung-Box)",
+      "k": 4,
+      "AIC": 309.72217169789053,
+      "AICc": 310.63126260698147,
+      "BIC": 317.28945289033305,
+      "MAE": 2.9506299080025773,
+      "RMSE": 4.813991610955503,
+      "MAPE": 15.954616642204703,
+      "sMAPE": 16.276967979444493,
+      "MASE": 0.3803270356858273,
+      "LB20_p": 0.08110861057741714,
+      "Konvergen": "Ya",
+      "AIC_sebanding": "Ya"
+    },
+    {
+      "Model": "Fourier K=2 + ARIMA(1,1,1)",
+      "Spesifikasi": "Regresi Fourier (K=2) + ARIMA(1,1,1)",
+      "k": 7,
+      "AIC": 684.3808324622838,
+      "AICc": 685.5851335375527,
+      "BIC": 702.6866760801727,
+      "MAE": 4.1252166075551555,
+      "RMSE": 5.075720613510741,
+      "MAPE": 25.323713120109602,
+      "sMAPE": 22.824425220257343,
+      "MASE": 0.531727615062196,
+      "LB20_p": 0.5335656739696019,
+      "Konvergen": "Bonus",
+      "AIC_sebanding": "Ya"
+    },
+    {
+      "Model": "Holt",
+      "Spesifikasi": "Trend aditif",
+      "k": 10,
+      "AIC": 421.4811600096669,
+      "AICc": 423.84675140751636,
+      "BIC": NaN,
+      "MAE": 4.543960771052463,
+      "RMSE": 5.357598885963195,
+      "MAPE": 28.37371683921007,
+      "sMAPE": 24.967257689655632,
+      "MASE": 0.5857024378557069,
+      "LB20_p": 0.5344432758569706,
+      "Konvergen": "Smoothing",
+      "AIC_sebanding": "Tidak"
+    },
+    {
+      "Model": "SES",
+      "Spesifikasi": "Simple exponential smoothing",
+      "k": 10,
+      "AIC": 417.49556168034053,
+      "AICc": 419.86115307819,
+      "BIC": NaN,
+      "MAE": 4.731918908534044,
+      "RMSE": 5.46432464231268,
+      "MAPE": 29.675730945506988,
+      "sMAPE": 25.910835585820656,
+      "MASE": 0.6099296583104032,
+      "LB20_p": 0.5340752650595835,
+      "Konvergen": "Smoothing",
+      "AIC_sebanding": "Tidak"
+    },
+    {
+      "Model": "ARIMA(1,1,3)",
+      "Spesifikasi": "ARIMA(1,1,3)",
+      "k": 5,
+      "AIC": 679.6219083278886,
+      "AICc": 680.2670696182112,
+      "BIC": 692.5975075785616,
+      "MAE": 5.085209742430336,
+      "RMSE": 5.708349194075499,
+      "MAPE": 32.14916097419575,
+      "sMAPE": 27.630555140929165,
+      "MASE": 0.6554677501010167,
+      "LB20_p": 0.8711266890833191,
+      "Konvergen": "Ya",
+      "AIC_sebanding": "Ya"
+    },
+    {
+      "Model": "AR(12)",
+      "Spesifikasi": "AR(12) dengan konstanta",
+      "k": 14,
+      "AIC": 641.6098183791074,
+      "AICc": 646.3289195027029,
+      "BIC": 676.914858457794,
+      "MAE": 6.187101578648595,
+      "RMSE": 6.572378197518031,
+      "MAPE": 39.46862531014892,
+      "sMAPE": 32.37835886739305,
+      "MASE": 0.797498187255705,
+      "LB20_p": 0.9935984804513631,
+      "Konvergen": "Ya",
+      "AIC_sebanding": "Ya"
+    },
+    {
+      "Model": "MA(8)",
+      "Spesifikasi": "Rata-rata bergerak 8 minggu",
+      "k": 1,
+      "AIC": NaN,
+      "AICc": NaN,
+      "BIC": NaN,
+      "MAE": 6.161828340640381,
+      "RMSE": 6.687015466377627,
+      "MAPE": 39.45800131754925,
+      "sMAPE": 32.55279327162682,
+      "MASE": 0.7942405453305766,
+      "LB20_p": NaN,
+      "Konvergen": "Smoothing",
+      "AIC_sebanding": "Tidak"
+    },
+    {
+      "Model": "Holt-Winters",
+      "Spesifikasi": "Trend + musiman aditif, s=52",
+      "k": 10,
+      "AIC": 428.44159043779047,
+      "AICc": 430.80718183563994,
+      "BIC": NaN,
+      "MAE": 5.186213299157383,
+      "RMSE": 6.73856193619728,
+      "MAPE": 28.743098851200816,
+      "sMAPE": 29.26230120586158,
+      "MASE": 0.668486795024115,
+      "LB20_p": 0.005944823224896603,
+      "Konvergen": "Smoothing",
+      "AIC_sebanding": "Tidak"
+    },
+    {
+      "Model": "ARMA(2,3)",
+      "Spesifikasi": "ARMA(2,3)",
+      "k": 7,
+      "AIC": 686.8343778394806,
+      "AICc": 688.0517691438284,
+      "BIC": 705.0705691413972,
+      "MAE": 6.795395897860953,
+      "RMSE": 7.067464405708389,
+      "MAPE": 43.74325119904389,
+      "sMAPE": 35.3696482006636,
+      "MASE": 0.8759054367122038,
+      "LB20_p": 0.8634189972435953,
+      "Konvergen": "Ya",
+      "AIC_sebanding": "Ya"
+    },
+    {
+      "Model": "Seasonal naive",
+      "Spesifikasi": "ŷₜ₊ₕ = yₜ₊ₕ₋₅₂",
+      "k": 0,
+      "AIC": NaN,
+      "AICc": NaN,
+      "BIC": NaN,
+      "MAE": 6.223214285714286,
+      "RMSE": 8.585117187026912,
+      "MAPE": 36.62576623436386,
+      "sMAPE": 30.74472467712764,
+      "MASE": 0.8021530030940567,
+      "LB20_p": NaN,
+      "Konvergen": "Benchmark",
+      "AIC_sebanding": "Tidak"
+    }
+  ],
+  "stationarity": [
+    {
+      "Seri": "Level",
+      "Uji": "ADF",
+      "Statistik": -2.2078082604905584,
+      "p-value": 0.20342372459386926,
+      "Lag": 4,
+      "n": 111,
+      "Kesimpulan": "Tidak stasioner"
+    },
+    {
+      "Seri": "Level",
+      "Uji": "KPSS",
+      "Statistik": 0.16079574130892593,
+      "p-value": 0.1,
+      "Lag": 5,
+      "n": 116,
+      "Kesimpulan": "Stasioner"
+    },
+    {
+      "Seri": "Diferensiasi pertama",
+      "Uji": "ADF",
+      "Statistik": -8.667949791584608,
+      "p-value": 4.6292782324312616e-14,
+      "Lag": 3,
+      "n": 111,
+      "Kesimpulan": "Stasioner"
+    },
+    {
+      "Seri": "Diferensiasi pertama",
+      "Uji": "KPSS",
+      "Statistik": 0.28813275004662275,
+      "p-value": 0.1,
+      "Lag": 47,
+      "n": 115,
+      "Kesimpulan": "Stasioner"
+    },
+    {
+      "Seri": "Diferensiasi musiman (lag 52)",
+      "Uji": "ADF",
+      "Statistik": -5.496995319341943,
+      "p-value": 2.1124860774661306e-06,
+      "Lag": 0,
+      "n": 63,
+      "Kesimpulan": "Stasioner"
+    },
+    {
+      "Seri": "Diferensiasi musiman (lag 52)",
+      "Uji": "KPSS",
+      "Statistik": 0.1044125750795397,
+      "p-value": 0.1,
+      "Lag": 3,
+      "n": 64,
+      "Kesimpulan": "Stasioner"
+    }
+  ],
+  "descriptive": [
+    {
+      "Statistik": "Jumlah observasi",
+      "Nilai": 116
+    },
+    {
+      "Statistik": "Periode awal",
+      "Nilai": "2022-08-08"
+    },
+    {
+      "Statistik": "Periode akhir",
+      "Nilai": "2024-10-21"
+    },
+    {
+      "Statistik": "Rata-rata",
+      "Nilai": 23.817138752052543
+    },
+    {
+      "Statistik": "Median",
+      "Nilai": 22.84970238095238
+    },
+    {
+      "Statistik": "Standar deviasi",
+      "Nilai": 8.446268570933459
+    },
+    {
+      "Statistik": "Minimum",
+      "Nilai": 9.691666666666666
+    },
+    {
+      "Statistik": "Kuartil 1",
+      "Nilai": 16.510565476190475
+    },
+    {
+      "Statistik": "Kuartil 3",
+      "Nilai": 29.472619047619048
+    },
+    {
+      "Statistik": "Maksimum",
+      "Nilai": 47.25595238095238
+    },
+    {
+      "Statistik": "Kemencengan",
+      "Nilai": 0.6354921958811539
+    },
+    {
+      "Statistik": "Kurtosis",
+      "Nilai": -0.3667063164073059
+    },
+    {
+      "Statistik": "Koefisien variasi",
+      "Nilai": 0.35462985956722304
+    },
+    {
+      "Statistik": "Jumlah hilang",
+      "Nilai": 0
+    }
+  ],
+  "pm_ratio_pre": 1.4640923566530208,
+  "pm_ratio_post": 1.0357072197055972,
+  "break": "2024-11-01"
+}

@@ -1,0 +1,31 @@
+Model,Parameter,Nilai
+SES,smoothing_level,0.33633486993862355
+SES,smoothing_trend,
+SES,smoothing_seasonal,
+SES,damping_trend,
+SES,initial_level,22.723552996444916
+SES,initial_trend,
+SES,initial_seasons,vektor kosong
+SES,use_boxcox,0.0
+SES,lamda,tidak diestimasi
+SES,remove_bias,0.0
+Holt,smoothing_level,0.33665816445490687
+Holt,smoothing_trend,0.0
+Holt,smoothing_seasonal,
+Holt,damping_trend,
+Holt,initial_level,22.81277281377454
+Holt,initial_trend,-0.029650621827662992
+Holt,initial_seasons,vektor kosong
+Holt,use_boxcox,0.0
+Holt,lamda,tidak diestimasi
+Holt,remove_bias,0.0
+Holt-Winters,smoothing_level,1.4901161193847656e-08
+Holt-Winters,smoothing_trend,0.0
+Holt-Winters,smoothing_seasonal,0.0
+Holt-Winters,damping_trend,
+Holt-Winters,initial_level,26.760391897968905
+Holt-Winters,initial_trend,-0.04122118893408561
+Holt-Winters,initial_seasons,vektor 52 nilai; awal=-4.1601
+Holt-Winters,use_boxcox,0.0
+Holt-Winters,lamda,tidak diestimasi
+Holt-Winters,remove_bias,0.0

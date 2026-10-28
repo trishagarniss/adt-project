@@ -1,0 +1,7 @@
+Seri,Uji,Statistik,p-value,Lag,n,Kesimpulan
+Level,ADF,-2.2078082604905584,0.20342372459386926,4,111,Tidak stasioner
+Level,KPSS,0.16079574130892593,0.1,5,116,Stasioner
+Diferensiasi pertama,ADF,-8.667949791584608,4.6292782324312616e-14,3,111,Stasioner
+Diferensiasi pertama,KPSS,0.28813275004662275,0.1,47,115,Stasioner
+Diferensiasi musiman (lag 52),ADF,-5.496995319341943,2.1124860774661306e-06,0,63,Stasioner
+Diferensiasi musiman (lag 52),KPSS,0.1044125750795397,0.1,3,64,Stasioner

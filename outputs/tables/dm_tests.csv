@@ -1,0 +1,12 @@
+Model pembanding,DM statistik,p-value,Kesimpulan
+Naive (random walk),1.3748363252454885,0.1965391105609835,Tidak berbeda signifikan
+MA(3),0.6321706281281098,0.5401922485356909,Tidak berbeda signifikan
+"Fourier K=2 + ARIMA(1,1,1)",-0.3293324949486873,0.7480899730460728,Tidak berbeda signifikan
+Holt,-0.5758019792378378,0.5763392972596093,Tidak berbeda signifikan
+SES,-0.6468994086880537,0.5309640397775808,Tidak berbeda signifikan
+"ARIMA(1,1,3)",-0.7990331181489766,0.4411830511923265,Tidak berbeda signifikan
+AR(12),-1.0815991908105198,0.30257221703948955,Tidak berbeda signifikan
+MA(8),-1.4163891345944282,0.18435177046224815,Tidak berbeda signifikan
+Holt-Winters,-2.597218561906743,0.024816771023118633,Berbeda signifikan
+"ARMA(2,3)",-1.4619338268686506,0.171732648557275,Tidak berbeda signifikan
+Seasonal naive,-2.1533183705939987,0.054332407761631396,Tidak berbeda signifikan
