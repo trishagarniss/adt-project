@@ -29,7 +29,7 @@ Data CAMS adalah **grid model**, bukan stasiun pengukuran darat Surakarta.
 | Naive RMSE | 4,64 µg/m³ |
 | Uji Diebold-Mariano vs naive | p = 0,197 (tidak signifikan) |
 
-Model menang menurut AICc, tetapi **tidak berbeda signifikan dari naive random walk**.
+Model terpilih berdasarkan AICc, tetapi **tidak berbeda signifikan dari naive random walk**.
 Peramalan 12 minggu relatif datar sekitar 14–15 µg/m³ dengan interval 80% dan 95%
 yang melebar. Keterbatasan utama: seri hanya 2,2 siklus tahunan, suku musiman tidak
 signifikan, dan residual heteroskedastik.
