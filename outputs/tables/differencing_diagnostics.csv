@@ -1,0 +1,6 @@
+Tingkat Diferensiasi,N Efektif,Varians,ACF Lag 1 (r₁),ADF Stat,ADF p-value,KPSS Stat,KPSS p-value,Keputusan / Status
+"Level (d=0, D=0)",104,70.9086,0.4962,-3.1439,0.0235,0.1324,0.1,Tidak Stasioner (Perlu Diferensiasi)
+"Diferensiasi Biasa 1 (d=1, D=0)",103,71.8018,-0.3355,-8.2202,6.46e-13,0.2198,0.1,"DIPILIH: Stasioner Kuat, Bebas Over-differencing"
+"Diferensiasi Biasa 2 (d=2, D=0)",102,193.5871,-0.5506,-7.5195,3.82e-11,0.085,0.1,"DITOLAK: Over-differencing Parah (Varians +169.6%, r₁ < -0.50)"
+"Diferensiasi Musiman (d=0, D=1, s=52)",52,85.4917,0.3027,-5.0907,1.46e-05,0.1564,0.1,"DITOLAK: Hilang 50% data, AICc = ∞, Ljung-Box p=0.0004"
+"Diferensiasi Ganda (d=1, D=1, s=52)",51,121.0598,-0.384,-5.3958,3.46e-06,0.1692,0.1,"DITOLAK: Over-differencing Ganda (Varians +68.6%, Hilang 53 obs)"
