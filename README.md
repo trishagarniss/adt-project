@@ -55,7 +55,9 @@ signifikan, dan residual heteroskedastik.
 │   ├── analysis.py             # pipeline analisis dan peramalan
 │   └── build_report.py         # generator laporan DOCX
 ├── notebooks/
-│   └── 01_analisis_pm25_surakarta.ipynb
+│   ├── 01_analisis_pm25_surakarta.ipynb
+│   ├── 01_eksplorasi_dan_prapemrosesan_kunto.ipynb
+│   └── 02_a_transformasi_varians_dan_uji_awal_maulana.ipynb
 ├── data/
 │   ├── raw/                    # data mentah CSV/JSON
 │   └── processed/              # data siap analisis
