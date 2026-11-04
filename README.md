@@ -58,7 +58,8 @@ signifikan, dan residual heteroskedastik.
 │   ├── 01_analisis_pm25_surakarta.ipynb
 │   ├── 01_eksplorasi_dan_prapemrosesan_kunto.ipynb
 │   ├── 02_a_transformasi_varians_dan_uji_awal_maulana.ipynb
-│   └── 02_b_diferensiasi_dan_stasioneritas_mike.ipynb
+│   ├── 02_b_diferensiasi_dan_stasioneritas_mike.ipynb
+│   └── 03_moving_average_dan_exponential_smoothing_maulana.ipynb
 ├── data/
 │   ├── raw/                    # data mentah CSV/JSON
 │   └── processed/              # data siap analisis
@@ -109,7 +110,8 @@ Pipeline `.py` tetap menjadi sumber utama; notebook tidak menduplikasi logika mo
 Selain itu, tersedia notebook per tahap pengerjaan terdistribusi:
 - `01_eksplorasi_dan_prapemrosesan_kunto.ipynb`: Tahap 1 (EDA, dekomposisi STL, autokorelasi, kontrol kualitas).
 - `02_a_transformasi_varians_dan_uji_awal_maulana.ipynb`: Tahap 2A (Analisis kestabilan varians, uji Box-Cox, uji stasioneritas level).
-- `02_b_diferensiasi_dan_stasioneritas_mike.ipynb`: Tahap 2B (Diferensiasi biasa d=1 & musiman D=0, uji ulang ADF & KPSS, diagnosis over-differencing).
+- `02_b_diferensiasi_dan_stasioneritas_mike.ipynb`: Tahap 2B (Diferensiasi biasa d=1 & musiman D=0, uji ulang ADF & KPSS, diagnosis over-differencing).
+- `03_moving_average_dan_exponential_smoothing_maulana.ipynb`: Tahap 3 (Simple Moving Average k=3, 8, 52, SES, Holt's Linear & Damped Trend, Holt-Winters Aditif & Multiplikatif s=52).
 
 ## Output
 
