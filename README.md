@@ -120,7 +120,8 @@ signifikan, dan residual heteroskedastik.
 
 │   ├── 02_b_diferensiasi_dan_stasioneritas_mike.ipynb
 │   ├── 03_moving_average_dan_exponential_smoothing_maulana.ipynb
-│   └── 04_model_ar_ma_dan_arma_mike.ipynb
+│   ├── 04_model_ar_ma_dan_arma_mike.ipynb
+│   └── 05_model_arima_dan_sarima_raihan.ipynb
 
 ├── data/
 
@@ -224,7 +225,8 @@ Selain itu, tersedia notebook per tahap pengerjaan terdistribusi:
 
 - `02_b_diferensiasi_dan_stasioneritas_mike.ipynb`: Tahap 2B (Diferensiasi biasa d=1 & musiman D=0, uji ulang ADF & KPSS, diagnosis over-differencing).
 - `03_moving_average_dan_exponential_smoothing_maulana.ipynb`: Tahap 3 (Simple Moving Average k=3, 8, 52, SES, Holt's Linear & Damped Trend, Holt-Winters Aditif & Multiplikatif s=52).
-- `04_model_ar_ma_dan_arma_mike.ipynb`: Tahap 4 (Identifikasi orde ACF/PACF deret stasioner, estimasi kandidat AR, MA, ARMA, serta pemeriksaan stasioneritas dan invertibilitas akar).
+- `04_model_ar_ma_dan_arma_mike.ipynb`: Tahap 4 (Identifikasi orde ACF/PACF deret stasioner, estimasi kandidat AR, MA, ARMA, serta pemeriksaan stasioneritas dan invertibilitas akar).
+- `05_model_arima_dan_sarima_raihan.ipynb`: Tahap 5 (Model ARIMA: manual grid vs auto_arima, analisis akar, diagnostik residual) dan Tahap 6 (Model SARIMA: lag musiman s=52, evaluasi signifikansi, justifikasi kritis penerapan musiman, peramalan 12 minggu).
 
 
 
